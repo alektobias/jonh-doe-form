@@ -1,0 +1,22 @@
+version: '3'
+services: 
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  frontend:
+    build: frontend/.
+    ports:
+      - "4173:4173"
+  backend: 
+    build: backend/.
+    depends_on:
+      - database
+    ports:
+      - "3000:3000"
+volumes:
+  pgdata:
+ 

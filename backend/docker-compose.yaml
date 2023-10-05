@@ -1,0 +1,20 @@
+version: '3'
+services: 
+  database:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=johndoe-colors
+      - POSTGRES_USER=johndoe
+      - POSTGRES_PASSWORD=randompassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  backend: 
+    build: .
+    depends_on:
+      - database
+    ports:
+      - "3000:3000"
+volumes:
+  pgdata:
+ 
