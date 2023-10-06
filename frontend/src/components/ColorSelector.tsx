@@ -12,19 +12,28 @@ const rainbowColors = [
 interface ColorSelectorProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   register: any;
+  getColor: React.FormEventHandler<HTMLFieldSetElement> 
 }
 
 
-function ColorSelector({ error, register, ...rest }: ColorSelectorProps) {
+function ColorSelector({ error, register, getColor, ...rest }: ColorSelectorProps) {
+
   return (
-    <fieldset className="flex flex-col items-start space-y-2" id="color" {...register}>
+    <fieldset className="flex flex-col items-start space-y-2" id="color" onChange={getColor}>
       <legend className="w-full text-left">
         <span>Cor predileta</span>
       </legend>
       <div className="flex justify-center space-x-4 w-full">
         {rainbowColors.map((color) =>
         (<label className='flex rounded-full checked:border-4' style={{ backgroundColor: color }}>
-          <input className='w-6 h-6 opacity-0  cursor-pointer checked:border checked:opacity-40 border' type='radio' value={color} {...rest} name="color" />
+          <input
+            className='w-6 h-6 opacity-0  cursor-pointer checked:border checked:opacity-40 border'
+            type='radio'
+            name="color"
+            value={color}
+            {...rest}
+            {...register}
+          />
         </label>)
         )}
       </div>
