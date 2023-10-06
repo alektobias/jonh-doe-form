@@ -1,22 +1,37 @@
-version: '3'
+version: '3.9'
 services: 
   database:
-    image: postgres
-    restart: always
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: example
+      - POSTGRES_DB=johndoe-colors
+      - POSTGRES_USER=johndoe
+      - POSTGRES_PASSWORD=randompassword
     volumes:
       - pgdata:/var/lib/postgresql/data
-  frontend:
-    build: frontend/.
-    ports:
-      - "4173:4173"
+    networks:
+      - internal_network
   backend: 
     build: backend/.
     depends_on:
       - database
     ports:
       - "3000:3000"
+    env_file:
+      - backend/.env
+    networks:
+      - internal_network
+  frontend:
+    build: frontend/.
+    ports: 
+      - "4173:4173"
+   
+    
 volumes:
   pgdata:
- 
+
+networks:
+  internal_network:
+    driver: bridge

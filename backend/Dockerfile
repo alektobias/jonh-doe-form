@@ -12,6 +12,9 @@ COPY . .
 
 EXPOSE 3000
 
+RUN pnpx prisma generate
+# RUN pnpx prisma migrate deploy
+
 RUN pnpm build
 
 
